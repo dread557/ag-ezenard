@@ -12,10 +12,12 @@ import React from "react";
 import ShoppingIcon from "@/assets/icons/ShoppingIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import { IProduct } from "@/types";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("screen");
 
 const SlideItem = () => {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -41,7 +43,10 @@ const SlideItem = () => {
             </Text>
           </View>
           <View style={{ alignItems: "flex-end" }}>
-            <Pressable style={styles.btn}>
+            <Pressable
+              style={styles.btn}
+              onPress={() => router.push("/details[id]")}
+            >
               <ShoppingIcon />
               <Text style={{ fontSize: 12, fontWeight: 500, color: "#0072C6" }}>
                 Add to cart
