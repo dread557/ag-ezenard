@@ -1,70 +1,102 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  ScrollView,
+  FlatList,
+  useColorScheme,
+} from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from "@expo/vector-icons";
+import Slider from "@/components/Home/Slider";
+import Brands from "@/components/Home/Brands";
+import SpecialOffers from "@/components/Home/SpecialOffers";
+import { Colors } from "@/constants/Colors";
+import Featured from "@/components/Home/Featured";
+import useGetProducts from "@/hooks/useGetProducts";
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+  const { products } = useGetProducts();
+  const colorScheme = useColorScheme();
+  const data = [1];
+  const renderHeader = () => (
+    <>
+      <View style={styles.topBar}>
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require("@/assets/images/logo.png")}
+          width={131.48}
+          height={19.3}
+          resizeMode="contain"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Feather name="search" size={24} color="black" />
+      </View>
+      <View style={styles.welcome}>
+        <View style={styles.initials}>
+          <ThemedText style={{ fontSize: 19, fontWeight: "500" }}>
+            AD
+          </ThemedText>
+        </View>
+        <View>
+          <ThemedText lightColor="#707070">Good afternoon 👋🏽</ThemedText>
+          <ThemedText style={styles.name}>Ada Dennis</ThemedText>
+        </View>
+      </View>
+      <Slider products={products} />
+    </>
+  );
+  return (
+    <SafeAreaView
+      style={{
+        paddingHorizontal: 20,
+        backgroundColor: Colors[colorScheme ?? "light"].background,
+      }}
+    >
+      <FlatList
+        data={data}
+        renderItem={() => null}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={() => (
+          <>
+            <Brands />
+            <SpecialOffers />
+            <Featured />
+          </>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  welcome: {
+    flexDirection: "row",
+    gap: 6,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  initials: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 49,
+    height: 48,
+    backgroundColor: "#E89705",
+    borderRadius: 9999,
+    borderWidth: 2,
+    borderColor: "#FFA500",
+  },
+  greeting: {
+    fontSize: 15,
+  },
+  name: {
+    fontSize: 19,
+    fontWeight: 500,
   },
 });
