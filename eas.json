@@ -1,0 +1,47 @@
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
+        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
+        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+      }
+    },
+    "preview3": {
+      "developmentClient": true,
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
+        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+      }
+    },
+    "preview4": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
+        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+      }
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
+        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+      }
+    }
+  }
+}
