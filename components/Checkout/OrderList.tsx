@@ -4,8 +4,11 @@ import { ThemedText } from "../ThemedText";
 import { Link } from "expo-router";
 import CheckoutItem from "./CheckoutItem";
 import ItemSeparator from "../ItemSeparator";
+import { useCart } from "@/contexts/CartContext";
 
 const OrderList = () => {
+  const { state } = useCart();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -20,9 +23,9 @@ const OrderList = () => {
         </Link>
       </View>
       <FlatList
-        data={[1, 2, 3]}
-        renderItem={() => <CheckoutItem />}
-        keyExtractor={(index) => index.toString()}
+        data={state.cart}
+        renderItem={({ item }) => <CheckoutItem item={item} />}
+        keyExtractor={(item) => item.unique_id}
         ItemSeparatorComponent={() => <ItemSeparator />}
         contentContainerStyle={{ paddingBottom: 180 }}
       />

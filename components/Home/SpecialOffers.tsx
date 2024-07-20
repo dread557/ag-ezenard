@@ -2,8 +2,16 @@ import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ThemedText } from "../ThemedText";
 import ProductCard from "../ProductCard";
+import useGetProducts from "@/hooks/useGetProducts";
+import { IProduct } from "@/types";
+import { formatList } from "@/utils/misc";
 
 const SpecialOffers = () => {
+  const { products } = useGetProducts();
+  const specialOfferProducts = products.filter((product) =>
+    product.categories.some((category) => category.name === "special offers")
+  );
+
   return (
     <View style={{ marginTop: 30 }}>
       <ThemedText
@@ -14,9 +22,9 @@ const SpecialOffers = () => {
       </ThemedText>
       <FlatList
         style={styles.productsWrapper}
-        data={[1, 2, 3, 4]}
-        renderItem={({ item }) => <ProductCard />}
-        keyExtractor={(item, index) => index.toString()}
+        data={specialOfferProducts}
+        renderItem={({ item }) => <ProductCard item={item} />}
+        keyExtractor={(item) => item.unique_id}
         numColumns={2}
         columnWrapperStyle={{
           justifyContent: "space-between",

@@ -2,18 +2,26 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ThemedText } from "../ThemedText";
 import ProductCard from "../ProductCard";
+import { IProduct } from "@/types";
 
-const More = () => {
+const More = ({ products, brand }: { products: IProduct[]; brand: string }) => {
+  const renderFooter = () => {
+    if (products.length % 2 !== 0) {
+      return <View style={{ flex: 1, padding: 16 }} />;
+    }
+    return null;
+  };
   return (
     <View style={styles.container}>
       <ThemedText style={{ fontSize: 24, fontWeight: 500, marginBottom: 6 }}>
-        More from Ego
+        More from {brand}
       </ThemedText>
       <FlatList
         style={styles.productsWrapper}
-        data={[1, 2, 3, 4]}
-        renderItem={({ item }) => <ProductCard />}
-        keyExtractor={(item, index) => index.toString()}
+        data={products}
+        renderItem={({ item }) => <ProductCard item={item} />}
+        keyExtractor={(item) => item.unique_id}
+        ListFooterComponent={renderFooter}
         numColumns={2}
         columnWrapperStyle={{
           justifyContent: "space-between",

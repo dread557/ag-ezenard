@@ -21,12 +21,29 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import PaymentForm from "@/components/Checkout/PaymentForm";
+import CustomAlert from "@/components/CustomAlert";
 
 const checkout = () => {
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+  });
   const [isOpened, setIsOpened] = useState(false);
   const bottomSheetRef = useRef<any>(null);
   const snapPoints = ["65%"];
   const handlePresentModal = () => {
+    if (
+      !userInfo.address ||
+      !userInfo.name ||
+      !userInfo.email ||
+      !userInfo.phoneNumber
+    ) {
+      setAlertVisible(true);
+      return;
+    }
     bottomSheetRef && bottomSheetRef.current?.present();
     setIsOpened(true);
   };
@@ -53,6 +70,13 @@ const checkout = () => {
         }}
       >
         {isOpened && <View style={styles.overlay} />}
+        <CustomAlert
+          visible={alertVisible}
+          message={
+            "Fill out personal information and delivery details before proceeding"
+          }
+          onClose={() => setAlertVisible(false)}
+        />
         <View
           style={{
             flexDirection: "row",
@@ -76,8 +100,8 @@ const checkout = () => {
           ListHeaderComponent={renderHeader}
           ListFooterComponent={
             <View style={{ paddingBottom: 80 }}>
-              <PersonalInfo />
-              <Delivery />
+              <PersonalInfo userInfo={userInfo} setUserInfo={setUserInfo} />
+              <Delivery userInfo={userInfo} setUserInfo={setUserInfo} />
               <PriceSummary />
               <View style={styles.bottom}>
                 <Pressable
@@ -87,7 +111,9 @@ const checkout = () => {
                     styles.btn,
                   ]}
                 >
-                  <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
+                  <ThemedText
+                    style={{ fontSize: 15, fontWeight: 500, color: "#2a2a2a" }}
+                  >
                     Cancel
                   </ThemedText>
                 </Pressable>
@@ -118,7 +144,7 @@ const checkout = () => {
         backgroundStyle={{ borderRadius: 16 }}
         onDismiss={handleCloseModal}
       >
-        <PaymentForm handleCloseModal={handleCloseModal} />
+        <PaymentForm handleCloseModal={handleCloseModal} userInfo={userInfo} />
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );

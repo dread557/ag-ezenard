@@ -4,19 +4,19 @@ import { FontAwesome } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 
 const colors = [
-  "#FF0000",
-  "#9747FF",
-  "#0000FF",
-  "#141B34",
-  "#FF00FF",
-  "#00FFFF",
+  { color: "Red", code: "#FF0000" },
+  { color: "Purple", code: "#9747FF" },
+  { color: "Blue", code: "#0000FF" },
+  { color: "Black", code: "#141B34" },
+  { color: "Yellow", code: "#FFCD00" },
+  { color: "Green", code: "#09C53B" },
 ];
 
 const ProductColors = () => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-  const handleColorPress = (color: string) => {
-    setSelectedColor(selectedColor === color ? null : color);
+  const handleColorPress = (color: { color: string; code: string }) => {
+    setSelectedColor(selectedColor === color.code ? null : color.code);
   };
 
   return (
@@ -30,12 +30,12 @@ const ProductColors = () => {
             key={index}
             style={[
               styles.colorBox,
-              { backgroundColor: color },
-              selectedColor === color && styles.selectedBox,
+              { backgroundColor: color.code },
+              selectedColor === color.code && styles.selectedBox,
             ]}
             onPress={() => handleColorPress(color)}
           >
-            {selectedColor === color && (
+            {selectedColor === color.code && (
               <FontAwesome name="check" size={9} color="white" />
             )}
           </Pressable>

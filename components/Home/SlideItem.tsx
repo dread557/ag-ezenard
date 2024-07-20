@@ -5,19 +5,20 @@ import {
   Image,
   Pressable,
   Dimensions,
-  Animated,
-  Easing,
 } from "react-native";
 import React from "react";
 import ShoppingIcon from "@/assets/icons/ShoppingIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import { IProduct } from "@/types";
 import { useRouter } from "expo-router";
+import { capitalizeWords, shortenWords } from "@/utils/misc";
 
 const { width } = Dimensions.get("screen");
 
-const SlideItem = () => {
+const SlideItem = ({ product }: { product: IProduct }) => {
   const router = useRouter();
+  const imageUrl = `https://api.timbu.cloud/images/${product.photos[0]?.url}`;
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -27,25 +28,33 @@ const SlideItem = () => {
         style={styles.itemBg}
       >
         <Image
+          source={{
+            uri: imageUrl,
+          }}
           style={styles.img}
-          source={{ uri: "https://github.com/dread557.png" }}
+          onError={(e) =>
+            console.error("Image loading error:", e.nativeEvent.error)
+          }
         />
+
         <View>
           <Text style={{ fontSize: 10, color: "white" }}>
-            Iconic Casual Brands
+            {capitalizeWords(product?.brand || product.categories[0]?.name)}
           </Text>
           <View style={{ flexDirection: "row", gap: 3 }}>
             <Text style={{ fontSize: 14, fontWeight: 600, color: "white" }}>
-              Ego Vessel
+              {shortenWords(capitalizeWords(product.name))}
             </Text>
-            <Text style={{ fontSize: 14, fontWeight: 500, color: "white" }}>
-              ₦ 37,000
-            </Text>
+            {Array.isArray(product?.current_price) && (
+              <Text style={{ fontSize: 14, fontWeight: 500, color: "white" }}>
+                ₦{product.current_price[0].NGN[0].toLocaleString()}
+              </Text>
+            )}
           </View>
           <View style={{ alignItems: "flex-end" }}>
             <Pressable
               style={styles.btn}
-              onPress={() => router.push("/details[id]")}
+              onPress={() => router.push(`/(details)/${product.id}`)}
             >
               <ShoppingIcon />
               <Text style={{ fontSize: 12, fontWeight: 500, color: "#0072C6" }}>
@@ -80,6 +89,7 @@ const styles = StyleSheet.create({
   img: {
     height: 154,
     width: 154,
+    resizeMode: "contain",
   },
   btn: {
     flexDirection: "row",

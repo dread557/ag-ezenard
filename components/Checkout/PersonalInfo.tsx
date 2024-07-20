@@ -13,20 +13,20 @@ import NameInputIcon from "@/assets/icons/NameInputIcon";
 import PhoneInputIcon from "@/assets/icons/PhoneInputIcon";
 import EmailInputIcon from "@/assets/icons/EmailInputIcon";
 import { Colors } from "@/constants/Colors";
+import { ICheckoutForm } from "@/types";
 
 type InfoKeys = "name" | "phoneNumber" | "email";
 
-const PersonalInfo = () => {
-  const [info, setInfo] = useState({
-    name: "Ada Dennis",
-    phoneNumber: "0901100101",
-    email: "ad@gmail.com",
-  });
+interface Props {
+  userInfo: ICheckoutForm;
+  setUserInfo: (arg: ICheckoutForm) => void;
+}
 
+const PersonalInfo = ({ userInfo, setUserInfo }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleInputChange = (key: InfoKeys, value: string) => {
-    setInfo({ ...info, [key]: value });
+    setUserInfo({ ...userInfo, [key]: value });
   };
 
   const toggleEditing = () => {
@@ -58,12 +58,9 @@ const PersonalInfo = () => {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <NameInputIcon />
             <TextInput
-              style={[
-                styles.input,
-                { color: Colors[colorScheme ?? "light"].text },
-              ]}
+              style={[styles.input]}
               editable={isEditing}
-              value={info.name}
+              value={userInfo.name}
               onChangeText={(text) => handleInputChange("name", text)}
               placeholder="Name"
             />
@@ -71,12 +68,9 @@ const PersonalInfo = () => {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <PhoneInputIcon />
             <TextInput
-              style={[
-                styles.input,
-                { color: Colors[colorScheme ?? "light"].text },
-              ]}
+              style={[styles.input]}
               editable={isEditing}
-              value={info.phoneNumber}
+              value={userInfo.phoneNumber}
               onChangeText={(text) => handleInputChange("phoneNumber", text)}
               placeholder="Phone Number"
               keyboardType="phone-pad"
@@ -86,12 +80,9 @@ const PersonalInfo = () => {
         <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
           <EmailInputIcon />
           <TextInput
-            style={[
-              styles.input,
-              { color: Colors[colorScheme ?? "light"].text },
-            ]}
+            style={[styles.input]}
             editable={isEditing}
-            value={info.email}
+            value={userInfo.email}
             onChangeText={(text) => handleInputChange("email", text)}
             placeholder="Email"
             keyboardType="email-address"

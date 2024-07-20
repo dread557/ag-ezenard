@@ -11,14 +11,23 @@ import React, { useState } from "react";
 import { ThemedText } from "../ThemedText";
 import { Colors } from "@/constants/Colors";
 import AddressInputIcon from "@/assets/icons/AddressInputIcon";
+import { ICheckoutForm } from "@/types";
+
+interface Props {
+  userInfo: ICheckoutForm;
+  setUserInfo: (arg: ICheckoutForm) => void;
+}
 
 const { width } = Dimensions.get("screen");
 
-const Delivery = () => {
-  const [address, setAddress] = useState("Ikeja, Lagos");
+const Delivery = ({ userInfo, setUserInfo }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = () => {
     setIsEditing(!isEditing);
+  };
+
+  const handleInputChange = (value: string) => {
+    setUserInfo({ ...userInfo, address: value });
   };
   const colorScheme = useColorScheme();
   return (
@@ -46,18 +55,17 @@ const Delivery = () => {
         >
           <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
             <AddressInputIcon />
-            <ThemedText style={{ fontSize: 12, fontWeight: 500 }}>
+            <ThemedText
+              style={{ fontSize: 12, fontWeight: 500, color: "#2A2A2A" }}
+            >
               Pick up joint
             </ThemedText>
           </View>
           <TextInput
-            style={[
-              styles.input,
-              { color: Colors[colorScheme ?? "light"].text },
-            ]}
+            style={[styles.input]}
             editable={isEditing}
-            value={address}
-            onChangeText={(text) => setAddress(text)}
+            value={userInfo.address}
+            onChangeText={(text) => handleInputChange(text)}
             placeholder="Address"
           />
         </View>

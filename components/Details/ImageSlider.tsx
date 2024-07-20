@@ -1,21 +1,22 @@
 import { StyleSheet, Image, View, Dimensions } from "react-native";
 import React from "react";
 import Swiper from "react-native-swiper";
+import { IPhoto } from "@/types";
 
 const { width } = Dimensions.get("screen");
 
-const SlideItem = () => {
+const SlideItem = ({ photo }: { photo: IPhoto }) => {
   return (
     <View style={styles.slideItemContainer}>
       <Image
         style={styles.img}
-        source={{ uri: "https://github.com/dread557.png" }}
+        source={{ uri: `https://api.timbu.cloud/images/${photo.url}` }}
       />
     </View>
   );
 };
 
-const ImageSlider = () => {
+const ImageSlider = ({ photos }: { photos: IPhoto[] }) => {
   return (
     <View style={styles.container}>
       <Swiper
@@ -25,8 +26,8 @@ const ImageSlider = () => {
         activeDotStyle={styles.activeDotStyle}
         paginationStyle={styles.paginationStyle}
       >
-        {[1, 2, 3].map((item, index) => (
-          <SlideItem key={index} />
+        {photos.map((item, index) => (
+          <SlideItem key={index} photo={item} />
         ))}
       </Swiper>
     </View>
@@ -69,7 +70,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   img: {
-    width: "61.5%",
-    height: "60.15%",
+    // width: "61.5%",
+    // height: "60.15%",
+    width: "100%",
+    height: "100%",
   },
 });

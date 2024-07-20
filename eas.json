@@ -5,9 +5,10 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
-        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
-        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+        "API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "APP_ID": "K879RNVNMOAU1H1",
+        "ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3",
+        "API_URL": "https://api.timbu.cloud"
       }
     },
     "preview2": {
@@ -15,32 +16,36 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "env": {
-        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
-        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
-        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+        "API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "APP_ID": "K879RNVNMOAU1H1",
+        "ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3",
+        "API_URL": "https://api.timbu.cloud"
       }
     },
     "preview3": {
       "developmentClient": true,
       "env": {
-        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
-        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
-        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+        "API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "APP_ID": "K879RNVNMOAU1H1",
+        "ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3",
+        "API_URL": "https://api.timbu.cloud"
       }
     },
     "preview4": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
-        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
-        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+        "API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "APP_ID": "K879RNVNMOAU1H1",
+        "ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3",
+        "API_URL": "https://api.timbu.cloud"
       }
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
-        "EXPO_PUBLIC_APP_ID": "K879RNVNMOAU1H1",
-        "EXPO_PUBLIC_ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3"
+        "API_KEY": "89d359cbbb81443f88ab8145d88e751920240712182856904192",
+        "APP_ID": "K879RNVNMOAU1H1",
+        "ORGANIZATION_ID": "e6a3334a7fe6420786d40f7535bb78d3",
+        "API_URL": "https://api.timbu.cloud"
       }
     }
   }

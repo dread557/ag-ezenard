@@ -14,10 +14,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import CartItem from "@/components/Cart/CartItem";
 import ItemSeparator from "@/components/ItemSeparator";
+import { useCart } from "@/contexts/CartContext";
 
 const cart = () => {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const { state, getTotalPrice } = useCart();
+  const totalPrice = getTotalPrice();
   return (
     <SafeAreaView
       style={{
@@ -43,32 +46,70 @@ const cart = () => {
           My Cart
         </ThemedText>
       </View>
-      <FlatList
-        data={[1, 2, 3]}
-        renderItem={() => <CartItem />}
-        keyExtractor={(index) => index.toString()}
-        ItemSeparatorComponent={() => <ItemSeparator />}
-        contentContainerStyle={{ paddingBottom: 180 }}
-      />
-      <View style={styles.bottomBar}>
+      {state.cart.length === 0 ? (
         <View>
-          <ThemedText lightColor="#9D9D9D" style={{ fontSize: 12 }}>
-            Total price
+          <ThemedText style={{ textAlign: "center" }}>
+            No Item in cart.{" "}
           </ThemedText>
-          <ThemedText style={{ fontSize: 19, fontWeight: 500 }}>
-            {" "}
-            ₦ 37,000.00
-          </ThemedText>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+              marginBottom: 35,
+            }}
+          >
+            <Pressable
+              onPress={() => {
+                router.push("/(tabs)/allProducts");
+              }}
+              style={styles.btn}
+            >
+              <ThemedText
+                style={{
+                  color: "#fff",
+                  fontSize: 15,
+                  fontWeight: 500,
+                  textAlign: "center",
+                }}
+              >
+                Add items
+              </ThemedText>
+            </Pressable>
+          </View>
         </View>
-        <Pressable
-          style={styles.addToCartBtn}
-          onPress={() => router.push("/checkout")}
-        >
-          <Text style={{ fontSize: 15, fontWeight: 600, color: "white" }}>
-            Checkout
-          </Text>
-        </Pressable>
-      </View>
+      ) : (
+        <>
+          <FlatList
+            data={state.cart}
+            renderItem={({ item }) => <CartItem item={item} />}
+            keyExtractor={(item) => item.unique_id}
+            ItemSeparatorComponent={() => <ItemSeparator />}
+            contentContainerStyle={{ paddingBottom: 180 }}
+          />
+          <View style={styles.bottomBar}>
+            <View>
+              <ThemedText style={{ fontSize: 12, color: "#9D9D9D" }}>
+                Total price
+              </ThemedText>
+              <ThemedText
+                style={{ fontSize: 19, fontWeight: 500, color: "#2A2A2A" }}
+              >
+                {" "}
+                ₦{totalPrice.toLocaleString()}
+              </ThemedText>
+            </View>
+            <Pressable
+              style={styles.addToCartBtn}
+              onPress={() => router.push("/checkout")}
+            >
+              <Text style={{ fontSize: 15, fontWeight: 600, color: "white" }}>
+                Checkout
+              </Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -99,5 +140,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#0072C6",
     borderRadius: 8,
     justifyContent: "center",
+  },
+  btn: {
+    backgroundColor: "#0072C6",
+    width: 104,
+    height: 42,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignContent: "center",
   },
 });

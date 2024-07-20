@@ -1,32 +1,56 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import LikeOutlineIcon from "@/assets/icons/LikeOutlineIcon";
 import LikeIcon from "@/assets/icons/LikeIcon";
 import { ThemedText } from "./ThemedText";
 import RatingIcon from "@/assets/icons/RatingIcon";
 import AddToCartIcon from "@/assets/icons/AddToCartIcon";
+import { IProduct } from "@/types";
+import { useCart } from "@/contexts/CartContext";
+import CustomAlert from "./CustomAlert";
+import { useWishlist } from "@/contexts/WishListContext";
 
-const ProductCard = () => {
-  const [liked, setLiked] = useState(false);
+const ProductCard = ({ item }: { item: IProduct }) => {
+  const [alertVisible, setAlertVisible] = useState(false);
+  const { dispatch } = useCart();
+  const { state: favoriteState, dispatch: favoriteDispatch } = useWishlist();
+  const imageUrl = `https://api.timbu.cloud/images/${item?.photos[0]?.url}`;
+
+  const addToCart = () => {
+    dispatch({ type: "ADD_TO_CART", payload: { ...item, quantity: 1 } });
+    setAlertVisible(true);
+  };
+
+  const isLiked = favoriteState.favorites.some(
+    (favItem) => favItem.id === item.id
+  );
 
   const handleLike = () => {
-    setLiked(!liked);
+    if (isLiked) {
+      favoriteDispatch({ type: "REMOVE_FROM_FAVORITES", payload: item.id });
+    } else {
+      favoriteDispatch({ type: "ADD_TO_FAVORITES", payload: item });
+    }
   };
+
   return (
     <View style={styles.wrapper}>
+      <CustomAlert
+        visible={alertVisible}
+        message={`Added ${item?.name} to cart`}
+        onClose={() => setAlertVisible(false)}
+      />
       <View style={styles.imgWrapper}>
         <Pressable style={styles.like} onPress={handleLike}>
-          {liked ? <LikeIcon /> : <LikeOutlineIcon />}
+          {isLiked ? <LikeIcon /> : <LikeOutlineIcon />}
         </Pressable>
-        <Image
-          style={styles.image}
-          source={{ uri: "https://github.com/dread557.png" }}
-        />
+        <Image style={styles.image} source={{ uri: imageUrl }} />
       </View>
       <Link
         href={{
-          pathname: "/details[id]",
+          pathname: `/(details)/${item?.id}`,
+          params: { rating: item?.rating },
         }}
       >
         <View>
@@ -34,7 +58,7 @@ const ProductCard = () => {
             lightColor="#2A2A2A"
             style={{ fontSize: 10, lineHeight: 11.72, marginTop: 10 }}
           >
-            Athletic/Sportswear
+            {item?.brand || item?.categories[0]?.name}
           </ThemedText>
           <ThemedText
             lightColor="#2A2A2A"
@@ -45,7 +69,7 @@ const ProductCard = () => {
               marginTop: 3,
             }}
           >
-            Air Jordan Running Sneaker
+            {item?.name}
           </ThemedText>
           <View
             style={{
@@ -57,11 +81,11 @@ const ProductCard = () => {
           >
             <RatingIcon />
             <ThemedText style={{ fontSize: 10, lineHeight: 11.72 }}>
-              4.5
+              {item?.rating}
             </ThemedText>
-            <ThemedText style={{ fontSize: 10, lineHeight: 11.72 }}>
+            {/* <ThemedText style={{ fontSize: 10, lineHeight: 11.72 }}>
               (100 sold)
-            </ThemedText>
+            </ThemedText> */}
           </View>
         </View>
       </Link>
@@ -79,21 +103,27 @@ const ProductCard = () => {
             darkColor="#0072C6"
             style={{ fontWeight: 600, fontSize: 12, lineHeight: 14.06 }}
           >
-            ₦ 28,000.00
+            ₦
+            {Array.isArray(item?.current_price) &&
+              item?.current_price[0].NGN[0].toLocaleString()}
           </ThemedText>
-          <ThemedText
-            lightColor="#9D9D9D"
-            style={{
-              fontWeight: 500,
-              fontSize: 12,
-              lineHeight: 14.06,
-              textDecorationLine: "line-through",
-            }}
-          >
-            ₦32,500.00
-          </ThemedText>
+          {item?.discounted_price && (
+            <ThemedText
+              lightColor="#9D9D9D"
+              style={{
+                fontWeight: 500,
+                fontSize: 12,
+                lineHeight: 14.06,
+                textDecorationLine: "line-through",
+              }}
+            >
+              ₦{item?.discounted_price.toLocaleString()}
+            </ThemedText>
+          )}
         </View>
-        <AddToCartIcon />
+        <Pressable onPress={() => addToCart()}>
+          <AddToCartIcon />
+        </Pressable>
       </View>
     </View>
   );
@@ -110,15 +140,16 @@ const styles = StyleSheet.create({
   imgWrapper: {
     width: "100%",
     borderRadius: 8,
-    padding: 30,
+    // padding: 30,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#EAEAEA66",
     height: 180,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   like: {
     position: "absolute",
@@ -126,6 +157,7 @@ const styles = StyleSheet.create({
     right: 10,
     width: 30.8,
     height: 30.8,
+    zIndex: 100,
   },
   strikethrough: {},
 });

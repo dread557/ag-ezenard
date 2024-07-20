@@ -46,13 +46,15 @@ export interface IProduct {
   parent_product_id: string | null;
   parent: string | null;
   organization_id: string;
+  brand?: string;
+  rating?: string;
   product_image: any[];
   categories: ICategory[];
   date_created: string;
   last_updated: string;
   user_id: string;
   photos: IPhoto[];
-  current_price: IPrice[];
+  current_price: IPrice[] | number;
   is_deleted: boolean;
   available_quantity: number;
   selling_price: number | null;
@@ -63,4 +65,25 @@ export interface IProduct {
 
 export interface ICategoryProducts {
   [key: string]: IProduct[];
+}
+
+export interface ICheckoutForm {
+  name: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+}
+
+export interface IOrder {
+  reference: string;
+  date: string;
+  amount: number;
+  status: string;
+  products: {
+    id: string;
+    name: string;
+    image: any;
+    quantity: number;
+    price: number | null;
+  }[];
 }

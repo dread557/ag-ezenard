@@ -12,6 +12,9 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { CartProvider } from "@/contexts/CartContext";
+import { WishListProvider } from "@/contexts/WishListContext";
+import { OrderProvider } from "@/contexts/OrderContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,15 +37,30 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(details)" options={{ headerShown: false }} />
-          <Stack.Screen name="checkout" options={{ headerShown: false }} />
-          <Stack.Screen name="success" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
+      <OrderProvider>
+        <CartProvider>
+          <WishListProvider>
+            <ThemeProvider
+              value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+              <Stack initialRouteName="(tabs)/home">
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="(details)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="checkout"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="success" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+              </Stack>
+            </ThemeProvider>
+          </WishListProvider>
+        </CartProvider>
+      </OrderProvider>
     </GestureHandlerRootView>
   );
 }

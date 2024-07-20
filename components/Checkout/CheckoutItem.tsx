@@ -1,19 +1,25 @@
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { ThemedText } from "../ThemedText";
+import { ICartItem } from "@/contexts/CartContext";
 
-const CheckoutItem = () => {
+const CheckoutItem = ({ item }: { item: ICartItem }) => {
+  const { quantity } = item;
+  const imageUrl = `https://api.timbu.cloud/images/${item?.photos[0]?.url}`;
+  const totalPrice =
+    (item?.current_price &&
+      (!Array.isArray(item?.current_price)
+        ? (quantity * item?.current_price).toLocaleString()
+        : (quantity * item?.current_price[0].NGN[0]).toLocaleString())) ||
+    0;
   return (
     <View style={styles.container}>
       <View style={styles.imgWrapper}>
-        <Image
-          style={styles.img}
-          source={{ uri: "https://github.com/dread557.png" }}
-        />
+        <Image style={styles.img} source={{ uri: imageUrl }} />
       </View>
       <View style={{ gap: 8, justifyContent: "center", position: "relative" }}>
         <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-          Ego Raid
+          {item.name}
         </ThemedText>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -51,11 +57,11 @@ const CheckoutItem = () => {
         <View style={{ flexDirection: "row", gap: 2, alignItems: "center" }}>
           <View style={{ flexDirection: "row", gap: 2, alignItems: "center" }}>
             <ThemedText>Quantity</ThemedText>
-            <ThemedText style={styles.input}>2</ThemedText>
+            <ThemedText style={styles.input}>{quantity}</ThemedText>
           </View>
           <View style={styles.divider} />
           <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-            ₦ 37,000.00
+            ₦ {totalPrice}
           </ThemedText>
         </View>
       </View>
@@ -84,8 +90,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
   img: {
-    width: "80%",
-    height: "41.66%",
+    width: "100%",
+    height: "100%",
   },
   colorBlock: {
     width: 20,

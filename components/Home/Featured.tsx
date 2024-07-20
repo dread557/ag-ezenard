@@ -2,8 +2,16 @@ import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ThemedText } from "../ThemedText";
 import ProductCard from "../ProductCard";
+import useGetProducts from "@/hooks/useGetProducts";
+import { useRouter } from "expo-router";
 
 const Featured = () => {
+  const { products } = useGetProducts();
+  const featuredProducts = products.filter((product) =>
+    product.categories.some((category) => category.name === "featured sneakers")
+  );
+  const data = featuredProducts.slice(0, 6);
+  const router = useRouter();
   return (
     <View style={{ marginTop: 30 }}>
       <ThemedText
@@ -14,9 +22,9 @@ const Featured = () => {
       </ThemedText>
       <FlatList
         style={styles.productsWrapper}
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-        renderItem={({ item }) => <ProductCard />}
-        keyExtractor={(item, index) => index.toString()}
+        data={data}
+        renderItem={({ item }) => <ProductCard item={item} />}
+        keyExtractor={(item) => item.unique_id}
         numColumns={2}
         columnWrapperStyle={{
           justifyContent: "space-between",
@@ -35,7 +43,12 @@ const Featured = () => {
           marginBottom: 35,
         }}
       >
-        <Pressable onPress={() => {}} style={styles.btn}>
+        <Pressable
+          onPress={() => {
+            router.push("/(tabs)/allProducts");
+          }}
+          style={styles.btn}
+        >
           <ThemedText
             style={{
               color: "#fff",

@@ -1,61 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { ThemedText } from "../ThemedText";
+import { useCart } from "@/contexts/CartContext";
 
 const PriceSummary = () => {
+  const { getTotalPrice } = useCart();
+  const totalPrice = getTotalPrice();
   return (
     <View style={styles.container}>
       <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
         Price summary
       </ThemedText>
       <View style={styles.box}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 7,
-          }}
-        >
-          <ThemedText style={{ fontSize: 15, color: "#555555" }}>
-            Total price
-          </ThemedText>
-          <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-            ₦ 185,000.00
+        <View style={styles.row}>
+          <ThemedText style={styles.key}>Total price</ThemedText>
+          <ThemedText style={styles.value}>
+            ₦ {totalPrice.toLocaleString()}
           </ThemedText>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 7,
-          }}
-        >
-          <ThemedText style={{ fontSize: 15, color: "#555555" }}>
-            Delivery Fee
-          </ThemedText>
-          <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-            ₦ 1,550.00
-          </ThemedText>
+        <View style={styles.row}>
+          <ThemedText style={styles.key}>Delivery Fee</ThemedText>
+          <ThemedText style={styles.value}>₦ 1,550.00</ThemedText>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 7,
-          }}
-        >
-          <ThemedText style={{ fontSize: 15, color: "#555555" }}>
-            Discount
-          </ThemedText>
-          <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-            ₦ 0.00
-          </ThemedText>
+        <View style={styles.row}>
+          <ThemedText style={styles.key}>Discount</ThemedText>
+          <ThemedText style={styles.value}>₦ 0.00</ThemedText>
         </View>
         <View
           style={{
@@ -69,11 +38,9 @@ const PriceSummary = () => {
             paddingTop: 15,
           }}
         >
-          <ThemedText style={{ fontSize: 15, color: "#555555" }}>
-            Total
-          </ThemedText>
-          <ThemedText style={{ fontSize: 15, fontWeight: 500 }}>
-            ₦ 186,550.00
+          <ThemedText style={styles.key}>Total</ThemedText>
+          <ThemedText style={styles.value}>
+            ₦ {(totalPrice + 1550).toLocaleString()}
           </ThemedText>
         </View>
       </View>
@@ -92,4 +59,13 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
   },
+  row: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 7,
+  },
+  key: { fontSize: 15, color: "#555555" },
+  value: { fontSize: 15, fontWeight: 500, color: "#2A2A2A" },
 });

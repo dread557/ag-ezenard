@@ -2,17 +2,14 @@ import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "../ThemedText";
 
-const Quantity = ({ title = true }: { title?: boolean }) => {
-  const [quantity, setQuantity] = useState(1);
+interface Props {
+  title?: boolean;
+  quantity: number;
+  increment: () => void;
+  decrement: () => void;
+}
 
-  const incrementQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
-
-  const decrementQuantity = () => {
-    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
+const Quantity = ({ title = true, quantity, increment, decrement }: Props) => {
   return (
     <View style={styles.container}>
       {title && (
@@ -21,11 +18,11 @@ const Quantity = ({ title = true }: { title?: boolean }) => {
         </ThemedText>
       )}
       <View style={styles.quantityContainer}>
-        <Pressable style={styles.button} onPress={decrementQuantity}>
+        <Pressable style={styles.button} onPress={decrement}>
           <ThemedText style={styles.buttonText}>-</ThemedText>
         </Pressable>
         <ThemedText style={styles.input}>{quantity}</ThemedText>
-        <Pressable style={styles.button} onPress={incrementQuantity}>
+        <Pressable style={styles.button} onPress={increment}>
           <ThemedText style={styles.buttonText}>+</ThemedText>
         </Pressable>
       </View>
@@ -56,6 +53,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#2A2A2A",
   },
   input: {
     width: 25,
@@ -67,5 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#0072C61F",
     alignItems: "center",
+    color: "#2A2A2A",
   },
 });

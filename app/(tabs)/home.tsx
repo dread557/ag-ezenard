@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   useColorScheme,
+  ActivityIndicator,
 } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -17,20 +18,15 @@ import SpecialOffers from "@/components/Home/SpecialOffers";
 import { Colors } from "@/constants/Colors";
 import Featured from "@/components/Home/Featured";
 import useGetProducts from "@/hooks/useGetProducts";
+import LogoIcon from "@/assets/icons/LogoIcon";
 
 export default function HomeScreen() {
-  const { products } = useGetProducts();
+  const { products, loading } = useGetProducts();
   const colorScheme = useColorScheme();
-  const data = [1];
   const renderHeader = () => (
     <>
       <View style={styles.topBar}>
-        <Image
-          source={require("@/assets/images/logo.png")}
-          width={131.48}
-          height={19.3}
-          resizeMode="contain"
-        />
+        <LogoIcon />
         <Feather name="search" size={24} color="black" />
       </View>
       <View style={styles.welcome}>
@@ -47,6 +43,7 @@ export default function HomeScreen() {
       <Slider products={products} />
     </>
   );
+
   return (
     <SafeAreaView
       style={{
@@ -54,19 +51,25 @@ export default function HomeScreen() {
         backgroundColor: Colors[colorScheme ?? "light"].background,
       }}
     >
-      <FlatList
-        data={data}
-        renderItem={() => null}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={() => (
-          <>
-            <Brands />
-            <SpecialOffers />
-            <Featured />
-          </>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {loading ? (
+        <View style={{ justifyContent: "center", flex: 1, marginTop: 50 }}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <FlatList
+          data={[1]}
+          renderItem={() => null}
+          ListHeaderComponent={renderHeader}
+          ListFooterComponent={() => (
+            <>
+              <Brands />
+              <SpecialOffers />
+              <Featured />
+            </>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
     </SafeAreaView>
   );
 }

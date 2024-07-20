@@ -3,9 +3,19 @@ import React from "react";
 import CancelIcon from "@/assets/icons/CancelIcon";
 import AtmCardIcon from "@/assets/icons/AtmCardIcon";
 import { useRouter } from "expo-router";
+import PaystackButton from "./PaystackButton";
+import { ICheckoutForm } from "@/types";
+import { useCart } from "@/contexts/CartContext";
 
-const PaymentForm = ({ handleCloseModal }: { handleCloseModal: any }) => {
-  const router = useRouter();
+const PaymentForm = ({
+  handleCloseModal,
+  userInfo,
+}: {
+  handleCloseModal: any;
+  userInfo: ICheckoutForm;
+}) => {
+  const { getTotalPrice } = useCart();
+  const totalPrice = getTotalPrice();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -23,7 +33,7 @@ const PaymentForm = ({ handleCloseModal }: { handleCloseModal: any }) => {
           <TextInput
             editable={false}
             style={styles.input}
-            value={"Ada Dennis"}
+            value={userInfo.name}
           />
         </View>
         <View>
@@ -31,7 +41,7 @@ const PaymentForm = ({ handleCloseModal }: { handleCloseModal: any }) => {
           <TextInput
             editable={false}
             style={styles.input}
-            value={"ad@gmaill.com"}
+            value={userInfo.email}
           />
         </View>
         <View>
@@ -39,14 +49,16 @@ const PaymentForm = ({ handleCloseModal }: { handleCloseModal: any }) => {
           <TextInput
             editable={false}
             style={styles.input}
-            value={"09100000000"}
+            value={userInfo.phoneNumber}
           />
         </View>
-        <Pressable style={styles.btn} onPress={() => router.push("/success")}>
-          <Text style={{ fontWeight: 500, fontSize: 15, color: "white" }}>
-            Proceed to payment
-          </Text>
-        </Pressable>
+        <PaystackButton
+          amount={totalPrice.toString()}
+          name={userInfo.name}
+          phoneNumber={userInfo.phoneNumber}
+          email={userInfo.email}
+          address={userInfo.address}
+        />
       </View>
     </View>
   );
@@ -82,14 +94,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "500",
     color: "#2A2A2A",
-  },
-  btn: {
-    width: "100%",
-    height: 42,
-    borderRadius: 8,
-    backgroundColor: "#0072C6",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
   },
 });

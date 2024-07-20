@@ -9,14 +9,16 @@ const Slider = ({ products }: { products: IProduct[] }) => {
   return (
     <View style={styles.container}>
       <Swiper
-        loop={false}
+        loop={true}
         showsPagination={true}
         dotStyle={styles.dotStyle}
         activeDotStyle={styles.activeDotStyle}
         paginationStyle={styles.paginationStyle}
+        autoplay
+        autoplayTimeout={7}
       >
-        {[1, 2, 3].map((item, index) => (
-          <SlideItem key={index} />
+        {slideProducts.map((product, index) => (
+          <SlideItem key={index} product={product} />
         ))}
       </Swiper>
     </View>

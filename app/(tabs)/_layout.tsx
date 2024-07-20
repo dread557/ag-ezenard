@@ -9,6 +9,7 @@ import { AllProductIcon } from "@/assets/icons/AllProductsIcon";
 import CartIcon from "@/assets/icons/CartIcon";
 import OrdersIcon from "@/assets/icons/OrdersIcon";
 import ProfileIcon from "@/assets/icons/ProfileIcon";
+import LogoIcon from "@/assets/icons/LogoIcon";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -29,7 +30,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
@@ -56,21 +57,28 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="orders"
+        name="wishlist"
+        options={{
+          title: "Wishlist",
+          tabBarIcon: ({ color, focused }) => (
+            <ProfileIcon focused={focused} fill={focused ? color : "none"} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(ordersTabs)"
         options={{
           title: "My Orders",
           tabBarIcon: ({ color, focused }) => (
             <OrdersIcon focused={focused} fill={focused ? color : "none"} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, focused }) => (
-            <ProfileIcon focused={focused} fill={focused ? color : "none"} />
-          ),
+          headerShown: true,
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerLeft: () => <LogoIcon />,
+          headerLeftContainerStyle: {
+            marginLeft: 20,
+          },
         }}
       />
     </Tabs>
